@@ -1,20 +1,49 @@
-import React, { useMemo, useState, createContext, useContext } from 'react';
-import { createTheme, ThemeProvider as MuiProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+// ThemeProvider.tsx
+import React, { createContext, useContext, useMemo, useState } from "react";
+import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
-const ThemeToggleContext = createContext({ toggle: ()=>{}, mode: 'light' as 'light'|'dark' });
+interface ThemeContextType {
+  toggle: () => void;
+  mode: "light" | "dark";
+}
+
+const ThemeToggleContext = createContext<ThemeContextType>({
+  toggle: () => {},
+  mode: "light",
+});
+
 export const useThemeToggle = () => useContext(ThemeToggleContext);
 
-export const Provider: React.FC<{children:any}> = ({ children })=>{
-  const [mode, setMode] = useState<'light'|'dark'>(()=> (localStorage.getItem('tm_mode') as 'light'|'dark') || 'light');
-  const toggle = ()=> { const next = mode === 'light' ? 'dark' : 'light'; setMode(next); localStorage.setItem('tm_mode', next); };
-  const theme = useMemo(()=> createTheme({ palette: { mode } }), [mode]);
+export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [mode, setMode] = useState<"light" | "dark">(
+    (localStorage.getItem("tm_theme") as "light" | "dark") || "light"
+  );
+
+  const toggle = () => {
+    setMode((prev) => {
+      const next = prev === "light" ? "dark" : "light";
+      localStorage.setItem("tm_theme", next);
+      return next;
+    });
+  };
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
+
   return (
     <ThemeToggleContext.Provider value={{ toggle, mode }}>
-      <MuiProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
         <CssBaseline />
         {children}
-      </MuiProvider>
+      </MuiThemeProvider>
     </ThemeToggleContext.Provider>
   );
 };

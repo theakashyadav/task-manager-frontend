@@ -13,6 +13,9 @@ import {
 import TaskCard from "../components/TaskCard";
 import TaskForm from "../components/TaskForm";
 import { useThemeToggle } from "../ThemeProvider";
+import { IconButton } from "@mui/material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
+
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState<any[]>([]);
@@ -21,7 +24,7 @@ export default function Dashboard() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const limit = 8;
-  const { toggle } = useThemeToggle();
+ const { toggle, mode } = useThemeToggle();
 
   const load = async (p = 1) => {
     const res = await api.get(`/tasks?page=${p}&limit=${limit}`);
@@ -44,27 +47,25 @@ export default function Dashboard() {
     <>
       <AppBar position="static" elevation={3}>
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Task Manager
-          </Typography>
-          <Button
-            color="inherit"
-            variant="outlined"
-            size="small"
-            onClick={toggle}
-            sx={{ mr: 1 }}
-          >
-            Switch Theme
-          </Button>
-          <Button
-            color="inherit"
-            variant="outlined"
-            size="small"
-            onClick={logout}
-          >
-            Logout
-          </Button>
-        </Toolbar>
+  <Typography variant="h6" sx={{ flexGrow: 1 }}>
+    Task Manager
+  </Typography>
+
+ <IconButton color="inherit" onClick={toggle} sx={{ mr: 1 }}>
+  {mode === "dark" ? <Brightness7 /> : <Brightness4 />}
+</IconButton>
+
+
+  <Button
+    color="inherit"
+    variant="outlined"
+    size="small"
+    onClick={logout}
+  >
+    Logout
+  </Button>
+</Toolbar>
+
       </AppBar>
 
       <Container sx={{ mt: 3 }}>
