@@ -54,7 +54,7 @@ export default function Dashboard() {
             onClick={toggle}
             sx={{ mr: 1 }}
           >
-            Toggle Theme
+            Switch Theme
           </Button>
           <Button
             color="inherit"
@@ -82,7 +82,7 @@ export default function Dashboard() {
               setOpen(true);
             }}
           >
-            Add Task
+            Add Task +
           </Button>
         </Box>
         <Grid container spacing={3}>
