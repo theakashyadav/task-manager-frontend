@@ -40,7 +40,7 @@ export default function Dashboard() {
   const logout = () => {
     localStorage.removeItem("tm_token");
     localStorage.removeItem("tm_user");
-    window.location.href = "/signin";
+    window.location.href = "/";
   };
 
   return (
